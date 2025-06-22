@@ -9,14 +9,24 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    <!-- Google Fonts - Montserrat for headings, Open Sans for body -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@500;600;700&family=Open+Sans:wght@400;500;600&display=swap" rel="stylesheet">
     
     <style>
         :root {
-            --whatsapp-green: #2e7d32;
-            --whatsapp-dark-green: #128C7E;
-            --whatsapp-light-green: #DCF8C6;
+            --primary-color: #2e7d32;
+            --primary-dark: #1b5e20;
+            --primary-light: #e8f5e9;
+            --accent-color: #ffab00;
+            --success-color: #388e3c;
+            --warning-color: #ffa000;
+            --danger-color: #d32f2f;
             --sidebar-width: 280px;
             --header-height: 70px;
+            --shadow-sm: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-md: 0 4px 12px rgba(0,0,0,0.12);
+            --shadow-lg: 0 8px 24px rgba(0,0,0,0.16);
+            --transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
         }
 
         * {
@@ -26,9 +36,18 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f8f9fa;
+            font-family: 'Open Sans', sans-serif;
+            background-color: #f8fafc;
             overflow-x: hidden;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        h1, h2, h3, h4, h5, h6,
+        .h1, .h2, .h3, .h4, .h5, .h6 {
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 600;
+            color: var(--primary-dark);
         }
 
         /* Header Styles */
@@ -38,10 +57,10 @@
             left: 0;
             right: 0;
             height: var(--header-height);
-            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+            background: linear-gradient(135deg, var(--primary-color), var(--primary-dark));
             color: white;
             z-index: 1050;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            box-shadow: var(--shadow-sm);
         }
 
         .header .container-fluid {
@@ -49,12 +68,13 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: 0 2rem;
         }
 
         .header-left {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 20px;
         }
 
         .sidebar-toggle {
@@ -65,81 +85,107 @@
             cursor: pointer;
             padding: 8px;
             border-radius: 8px;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .sidebar-toggle:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.15);
+            transform: scale(1.05);
         }
 
         .logo {
-            font-size: 1.5rem;
-            font-weight: bold;
+            font-size: 1.75rem;
+            font-weight: 700;
             text-decoration: none;
             color: white;
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
+            font-family: 'Montserrat', sans-serif;
+            letter-spacing: 0.5px;
+        }
+
+        .logo i {
+            font-size: 1.8rem;
         }
 
         .header-right {
             display: flex;
             align-items: center;
-            gap: 20px;
+            gap: 25px;
         }
 
         .user-profile {
             display: flex;
             align-items: center;
-            gap: 10px;
+            gap: 12px;
             cursor: pointer;
-            padding: 5px 15px;
-            border-radius: 25px;
-            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 30px;
+            transition: var(--transition);
+            position: relative;
         }
 
         .user-profile:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.15);
         }
 
         .user-avatar {
-            width: 40px;
-            height: 40px;
+            width: 42px;
+            height: 42px;
             border-radius: 50%;
             background-color: rgba(255,255,255,0.2);
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.2rem;
+            border: 2px solid rgba(255,255,255,0.3);
+        }
+
+        .user-info {
+            line-height: 1.3;
+        }
+
+        .user-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .user-role {
+            font-size: 0.75rem;
+            opacity: 0.9;
         }
 
         .notification-bell {
             position: relative;
             color: white;
-            font-size: 1.3rem;
+            font-size: 1.4rem;
             cursor: pointer;
             padding: 8px;
             border-radius: 50%;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .notification-bell:hover {
-            background-color: rgba(255,255,255,0.1);
+            background-color: rgba(255,255,255,0.15);
+            transform: scale(1.1);
         }
 
         .notification-badge {
             position: absolute;
-            top: 0;
-            right: 0;
-            background-color: #dc3545;
+            top: 2px;
+            right: 2px;
+            background-color: var(--accent-color);
             color: white;
             border-radius: 50%;
-            width: 18px;
-            height: 18px;
+            width: 20px;
+            height: 20px;
             font-size: 0.7rem;
             display: flex;
             align-items: center;
             justify-content: center;
+            font-weight: 600;
+            border: 2px solid var(--primary-dark);
         }
 
         /* Sidebar Styles */
@@ -150,10 +196,11 @@
             width: var(--sidebar-width);
             height: calc(100vh - var(--header-height));
             background-color: white;
-            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
+            box-shadow: var(--shadow-md);
+            transition: var(--transition);
             z-index: 1040;
             overflow-y: auto;
+            border-right: 1px solid rgba(0,0,0,0.05);
         }
 
         .sidebar.active {
@@ -170,7 +217,7 @@
             z-index: 1030;
             opacity: 0;
             visibility: hidden;
-            transition: all 0.3s ease;
+            transition: var(--transition);
         }
 
         .sidebar-overlay.active {
@@ -179,104 +226,195 @@
         }
 
         .sidebar-menu {
-            padding: 20px 0;
+            padding: 1.5rem 0;
         }
 
         .menu-item {
-            margin-bottom: 5px;
+            margin-bottom: 4px;
         }
 
         .menu-link {
             display: flex;
             align-items: center;
-            padding: 12px 20px;
-            color: #333;
+            padding: 0.85rem 1.5rem;
+            color: #444;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            transition: var(--transition);
+            border-left: 4px solid transparent;
+            font-weight: 500;
         }
 
         .menu-link:hover {
-            background-color: var(--whatsapp-light-green);
-            color: var(--whatsapp-dark-green);
-            border-left-color: var(--whatsapp-green);
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
         }
 
         .menu-link.active {
-            background-color: var(--whatsapp-light-green);
-            color: var(--whatsapp-dark-green);
-            border-left-color: var(--whatsapp-green);
+            background-color: var(--primary-light);
+            color: var(--primary-color);
+            border-left-color: var(--primary-color);
             font-weight: 600;
         }
 
         .menu-icon {
-            width: 20px;
+            width: 24px;
             margin-right: 15px;
-            font-size: 1.1rem;
+            font-size: 1.2rem;
+            text-align: center;
+            color: var(--primary-color);
         }
 
         .menu-text {
             flex: 1;
+            font-size: 0.95rem;
         }
 
         .menu-arrow {
-            transition: transform 0.3s ease;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            color: #777;
         }
 
         .menu-item.expanded .menu-arrow {
             transform: rotate(180deg);
+            color: var(--primary-color);
         }
 
         .submenu {
-            background-color: #f8f9fa;
+            background-color: #f8fafc;
             max-height: 0;
             overflow: hidden;
-            transition: max-height 0.3s ease;
+            transition: var(--transition);
+            border-left: 4px solid var(--primary-light);
         }
 
         .submenu.expanded {
-            max-height: 300px;
+            max-height: 500px;
         }
 
         .submenu-link {
             display: flex;
             align-items: center;
-            padding: 10px 20px 10px 55px;
-            color: #666;
+            padding: 0.7rem 1.5rem 0.7rem 3.5rem;
+            color: #555;
             text-decoration: none;
-            transition: all 0.3s ease;
-            border-left: 3px solid transparent;
+            transition: var(--transition);
+            font-size: 0.9rem;
+            font-weight: 500;
         }
 
         .submenu-link:hover {
-            background-color: var(--whatsapp-light-green);
-            color: var(--whatsapp-dark-green);
-            border-left-color: var(--whatsapp-green);
+            background-color: rgba(26, 79, 139, 0.05);
+            color: var(--primary-color);
         }
 
         /* Main Content */
         .main-content {
             margin-top: var(--header-height);
-            padding: 30px;
+            padding: 2.5rem;
             min-height: calc(100vh - var(--header-height));
-            transition: margin-left 0.3s ease;
+            transition: var(--transition);
         }
 
         .main-content.shifted {
             margin-left: var(--sidebar-width);
         }
 
+        .card {
+            border: none;
+            border-radius: 10px;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+            margin-bottom: 1.5rem;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-md);
+        }
+
+        .card-header {
+            background-color: white;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            padding: 1.25rem 1.5rem;
+            border-radius: 10px 10px 0 0 !important;
+            font-weight: 600;
+            color: var(--primary-dark);
+        }
+
+        .card-body {
+            padding: 1.5rem;
+        }
+
+        /* Buttons */
+        .btn {
+            font-weight: 500;
+            padding: 0.5rem 1.25rem;
+            border-radius: 8px;
+            transition: var(--transition);
+            letter-spacing: 0.3px;
+        }
+
+        .btn-primary {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+        }
+
+        .btn-outline-primary {
+            color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
+        .btn-outline-primary:hover {
+            background-color: var(--primary-color);
+            border-color: var(--primary-color);
+        }
+
         /* Footer */
         .footer {
-            background: linear-gradient(135deg, var(--whatsapp-dark-green), var(--whatsapp-green));
+            background: linear-gradient(135deg, var(--primary-dark), var(--primary-color));
             color: white;
             text-align: center;
-            padding: 20px 0;
+            padding: 1.5rem 0;
             margin-top: auto;
+            font-size: 0.9rem;
+        }
+
+        .footer p {
+            margin-bottom: 0.25rem;
+            font-weight: 500;
+        }
+
+        .footer small {
+            opacity: 0.8;
+            font-size: 0.8rem;
+        }
+
+        /* Badges */
+        .badge {
+            font-weight: 500;
+            padding: 0.35em 0.65em;
+            border-radius: 8px;
         }
 
         /* Responsive Design */
+        @media (max-width: 992px) {
+            .main-content {
+                padding: 1.5rem;
+            }
+        }
+
         @media (max-width: 768px) {
+            .header .container-fluid {
+                padding: 0 1.25rem;
+            }
+            
             .sidebar {
                 width: 100%;
                 left: -100%;
@@ -293,6 +431,55 @@
             .header-right .user-name {
                 display: none;
             }
+
+            .main-content {
+                padding: 1.25rem;
+            }
+        }
+
+        @media (max-width: 576px) {
+            .header .container-fluid {
+                padding: 0 1rem;
+            }
+
+            .logo span {
+                display: none;
+            }
+
+            .main-content {
+                padding: 1rem;
+            }
+        }
+
+        /* Animation */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .fade-in {
+            animation: fadeIn 0.4s ease forwards;
+        }
+
+        /* Utility Classes */
+        .text-primary {
+            color: var(--primary-color) !important;
+        }
+
+        .bg-primary {
+            background-color: var(--primary-color) !important;
+        }
+
+        .border-primary {
+            border-color: var(--primary-color) !important;
+        }
+
+        .rounded-lg {
+            border-radius: 12px !important;
+        }
+
+        .shadow-primary {
+            box-shadow: 0 4px 20px rgba(26, 79, 139, 0.15) !important;
         }
     </style>
 </head>
@@ -306,7 +493,7 @@
                 </button>
                 <a href="#" class="logo">
                     <i class="bi bi-bank2"></i>
-                    <span>CoopBank</span>
+                    <span>Cooperative Banking</span>
                 </a>
             </div>
             <div class="header-right">
@@ -468,12 +655,91 @@
     <main class="main-content" id="mainContent">
         {% block content %}
         <div class="container-fluid">
-            <div class="row">
+            <div class="row fade-in">
                 <div class="col-12">
-                    <div class="card shadow-sm">
+                    <div class="card shadow-primary">
+                        <div class="card-body text-center py-5">
+                            <h1 class="display-5 mb-4">Welcome to Cooperative Banking System</h1>
+                            <p class="lead text-muted mb-4">Manage your cooperative's financial operations with our comprehensive banking solution</p>
+                            <div class="d-flex justify-content-center gap-3">
+                                <button class="btn btn-primary btn-lg px-4">
+                                    <i class="bi bi-speedometer2 me-2"></i>Dashboard
+                                </button>
+                                <button class="btn btn-outline-primary btn-lg px-4">
+                                    <i class="bi bi-people me-2"></i>View Members
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="row mt-4 fade-in" style="animation-delay: 0.2s;">
+                <div class="col-md-4">
+                    <div class="card h-100">
                         <div class="card-body">
-                            <h1 class="h3 mb-4">Welcome to Cooperative Banking System</h1>
-                            <p class="text-muted">This is the base template. Other pages will extend this layout.</p>
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-primary bg-opacity-10 p-3 rounded me-3">
+                                    <i class="bi bi-people text-primary fs-4"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Members</h5>
+                                    <small class="text-muted">Total registered members</small>
+                                </div>
+                            </div>
+                            <h2 class="display-6 mb-3">1,248</h2>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-success bg-opacity-10 text-success me-2">
+                                    <i class="bi bi-arrow-up"></i> 12.5%
+                                </span>
+                                <small class="text-muted">vs last month</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-success bg-opacity-10 p-3 rounded me-3">
+                                    <i class="bi bi-cash-coin text-success fs-4"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Total Deposits</h5>
+                                    <small class="text-muted">All account types</small>
+                                </div>
+                            </div>
+                            <h2 class="display-6 mb-3">$4.8M</h2>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-success bg-opacity-10 text-success me-2">
+                                    <i class="bi bi-arrow-up"></i> 8.3%
+                                </span>
+                                <small class="text-muted">vs last quarter</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="col-md-4">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <div class="d-flex align-items-center mb-3">
+                                <div class="bg-warning bg-opacity-10 p-3 rounded me-3">
+                                    <i class="bi bi-pie-chart text-warning fs-4"></i>
+                                </div>
+                                <div>
+                                    <h5 class="mb-0">Active Loans</h5>
+                                    <small class="text-muted">Currently outstanding</small>
+                                </div>
+                            </div>
+                            <h2 class="display-6 mb-3">$2.1M</h2>
+                            <div class="d-flex align-items-center">
+                                <span class="badge bg-danger bg-opacity-10 text-danger me-2">
+                                    <i class="bi bi-arrow-down"></i> 3.2%
+                                </span>
+                                <small class="text-muted">vs last quarter</small>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -486,7 +752,7 @@
     <footer class="footer">
         <div class="container">
             <p>&copy; 2025 Cooperative Banking System. All rights reserved.</p>
-            <small>Powered by Django & Bootstrap</small>
+            <small>Powered by Kencom softwares Ltd & Steve Ongera</small>
         </div>
     </footer>
 
