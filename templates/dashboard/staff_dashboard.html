@@ -1,0 +1,109 @@
+{% extends 'base.html' %}
+
+{% block title %}Staff Dashboard{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+    <div class="dashboard-header">
+        <h2>Staff Dashboard</h2>
+        <p>Welcome, {{ user.get_full_name }} ({{ user.branch.name|default:"Head Office" }})</p>
+    </div>
+
+    <div class="dashboard-widgets">
+        <div class="widget branch-summary">
+            <h3>Branch Summary</h3>
+            <div class="widget-content">
+                <div class="summary-item">
+                    <span>Total Members</span>
+                    <span>{{ branch_stats.total_members }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Active Loans</span>
+                    <span>{{ branch_stats.active_loans }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Today's Transactions</span>
+                    <span>{{ branch_stats.todays_transactions }}</span>
+                </div>
+                <div class="summary-item">
+                    <span>Pending Approvals</span>
+                    <span>{{ branch_stats.pending_approvals }}</span>
+                </div>
+            </div>
+            <a href="#" class="widget-link">View Branch Reports</a>
+        </div>
+
+        <div class="widget pending-approvals">
+            <h3>Pending Approvals</h3>
+            <div class="widget-content">
+                {% if pending_approvals %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Type</th>
+                                <th>Details</th>
+                                <th>Date</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for approval in pending_approvals %}
+                            <tr>
+                                <td>{{ approval.type }}</td>
+                                <td>{{ approval.details }}</td>
+                                <td>{{ approval.created_at|date:"M d, Y" }}</td>
+                                <td>
+                                    <a href="{{ approval.link }}">Review</a>
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No pending approvals</p>
+                {% endif %}
+            </div>
+            <a href="#" class="widget-link">View All Approvals</a>
+        </div>
+
+        <div class="widget recent-activities">
+            <h3>Recent Activities</h3>
+            <div class="widget-content">
+                {% if recent_activities %}
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Time</th>
+                                <th>Activity</th>
+                                <th>User</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for activity in recent_activities %}
+                            <tr>
+                                <td>{{ activity.timestamp|timesince }} ago</td>
+                                <td>{{ activity.description }}</td>
+                                <td>{{ activity.user.get_full_name }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p>No recent activities</p>
+                {% endif %}
+            </div>
+            <a href="#" class="widget-link">View Audit Logs</a>
+        </div>
+
+        <div class="widget quick-actions">
+            <h3>Quick Actions</h3>
+            <div class="widget-content">
+                <a href="#" class="quick-action">Register Member</a>
+                <a href="#" class="quick-action">Process Loan</a>
+                <a href="#" class="quick-action">Post Transaction</a>
+                <a href="#" class="quick-action">Generate Report</a>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
