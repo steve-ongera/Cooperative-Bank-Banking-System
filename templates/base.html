@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cooperative Banking System{% endblock %}</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.0/font/bootstrap-icons.css" rel="stylesheet">
+    
+    <style>
+        :root {
+            --whatsapp-green: #25D366;
+            --whatsapp-dark-green: #128C7E;
+            --whatsapp-light-green: #DCF8C6;
+            --sidebar-width: 280px;
+            --header-height: 70px;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            overflow-x: hidden;
+        }
+
+        /* Header Styles */
+        .header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: var(--header-height);
+            background: linear-gradient(135deg, var(--whatsapp-green), var(--whatsapp-dark-green));
+            color: white;
+            z-index: 1050;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .header .container-fluid {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-toggle:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            text-decoration: none;
+            color: white;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            cursor: pointer;
+            padding: 5px 15px;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+        }
+
+        .user-profile:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+        }
+
+        .notification-bell {
+            position: relative;
+            color: white;
+            font-size: 1.3rem;
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 50%;
+            transition: all 0.3s ease;
+        }
+
+        .notification-bell:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+
+        .notification-badge {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background-color: #dc3545;
+            color: white;
+            border-radius: 50%;
+            width: 18px;
+            height: 18px;
+            font-size: 0.7rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Sidebar Styles */
+        .sidebar {
+            position: fixed;
+            top: var(--header-height);
+            left: -280px;
+            width: var(--sidebar-width);
+            height: calc(100vh - var(--header-height));
+            background-color: white;
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
+            z-index: 1040;
+            overflow-y: auto;
+        }
+
+        .sidebar.active {
+            left: 0;
+        }
+
+        .sidebar-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+            z-index: 1030;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+
+        .menu-item {
+            margin-bottom: 5px;
+        }
+
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #333;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .menu-link:hover {
+            background-color: var(--whatsapp-light-green);
+            color: var(--whatsapp-dark-green);
+            border-left-color: var(--whatsapp-green);
+        }
+
+        .menu-link.active {
+            background-color: var(--whatsapp-light-green);
+            color: var(--whatsapp-dark-green);
+            border-left-color: var(--whatsapp-green);
+            font-weight: 600;
+        }
+
+        .menu-icon {
+            width: 20px;
+            margin-right: 15px;
+            font-size: 1.1rem;
+        }
+
+        .menu-text {
+            flex: 1;
+        }
+
+        .menu-arrow {
+            transition: transform 0.3s ease;
+        }
+
+        .menu-item.expanded .menu-arrow {
+            transform: rotate(180deg);
+        }
+
+        .submenu {
+            background-color: #f8f9fa;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .submenu.expanded {
+            max-height: 300px;
+        }
+
+        .submenu-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 20px 10px 55px;
+            color: #666;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+
+        .submenu-link:hover {
+            background-color: var(--whatsapp-light-green);
+            color: var(--whatsapp-dark-green);
+            border-left-color: var(--whatsapp-green);
+        }
+
+        /* Main Content */
+        .main-content {
+            margin-top: var(--header-height);
+            padding: 30px;
+            min-height: calc(100vh - var(--header-height));
+            transition: margin-left 0.3s ease;
+        }
+
+        .main-content.shifted {
+            margin-left: var(--sidebar-width);
+        }
+
+        /* Footer */
+        .footer {
+            background: linear-gradient(135deg, var(--whatsapp-dark-green), var(--whatsapp-green));
+            color: white;
+            text-align: center;
+            padding: 20px 0;
+            margin-top: auto;
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 100%;
+                left: -100%;
+            }
+            
+            .sidebar.active {
+                left: 0;
+            }
+            
+            .main-content.shifted {
+                margin-left: 0;
+            }
+            
+            .header-right .user-name {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container-fluid">
+            <div class="header-left">
+                <button class="sidebar-toggle" id="sidebarToggle">
+                    <i class="bi bi-list"></i>
+                </button>
+                <a href="#" class="logo">
+                    <i class="bi bi-bank2"></i>
+                    <span>CoopBank</span>
+                </a>
+            </div>
+            <div class="header-right">
+                <div class="notification-bell">
+                    <i class="bi bi-bell"></i>
+                    <span class="notification-badge">3</span>
+                </div>
+                <div class="user-profile">
+                    <div class="user-avatar">
+                        <i class="bi bi-person"></i>
+                    </div>
+                    <div class="user-info">
+                        <div class="user-name">John Doe</div>
+                        <small class="user-role">Administrator</small>
+                    </div>
+                    <i class="bi bi-chevron-down"></i>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Overlay -->
+    <div class="sidebar-overlay" id="sidebarOverlay"></div>
+
+    <!-- Sidebar -->
+    <nav class="sidebar" id="sidebar">
+        <div class="sidebar-menu">
+            <!-- Dashboard -->
+            <div class="menu-item">
+                <a href="#" class="menu-link active">
+                    <i class="bi bi-speedometer2 menu-icon"></i>
+                    <span class="menu-text">Dashboard</span>
+                </a>
+            </div>
+
+            <!-- Members Management -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="members">
+                    <i class="bi bi-people menu-icon"></i>
+                    <span class="menu-text">Members</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="members-submenu">
+                    <a href="#" class="submenu-link">All Members</a>
+                    <a href="#" class="submenu-link">Add Member</a>
+                    <a href="#" class="submenu-link">Member Applications</a>
+                    <a href="#" class="submenu-link">Guarantors</a>
+                </div>
+            </div>
+
+            <!-- Accounts Management -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="accounts">
+                    <i class="bi bi-wallet2 menu-icon"></i>
+                    <span class="menu-text">Accounts</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="accounts-submenu">
+                    <a href="#" class="submenu-link">All Accounts</a>
+                    <a href="#" class="submenu-link">Savings Accounts</a>
+                    <a href="#" class="submenu-link">Current Accounts</a>
+                    <a href="#" class="submenu-link">Fixed Deposits</a>
+                    <a href="#" class="submenu-link">Account Types</a>
+                </div>
+            </div>
+
+            <!-- Transactions -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="transactions">
+                    <i class="bi bi-arrow-left-right menu-icon"></i>
+                    <span class="menu-text">Transactions</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="transactions-submenu">
+                    <a href="#" class="submenu-link">All Transactions</a>
+                    <a href="#" class="submenu-link">Deposits</a>
+                    <a href="#" class="submenu-link">Withdrawals</a>
+                    <a href="#" class="submenu-link">Transfers</a>
+                </div>
+            </div>
+
+            <!-- Loans Management -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="loans">
+                    <i class="bi bi-cash-coin menu-icon"></i>
+                    <span class="menu-text">Loans</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="loans-submenu">
+                    <a href="#" class="submenu-link">All Loans</a>
+                    <a href="#" class="submenu-link">Loan Applications</a>
+                    <a href="#" class="submenu-link">Loan Products</a>
+                    <a href="#" class="submenu-link">Payments</a>
+                    <a href="#" class="submenu-link">Overdue Loans</a>
+                </div>
+            </div>
+
+            <!-- Shares Management -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="shares">
+                    <i class="bi bi-pie-chart menu-icon"></i>
+                    <span class="menu-text">Shares</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="shares-submenu">
+                    <a href="#" class="submenu-link">Share Transactions</a>
+                    <a href="#" class="submenu-link">Share Prices</a>
+                    <a href="#" class="submenu-link">Dividends</a>
+                </div>
+            </div>
+
+            <!-- Committee Management -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="committees">
+                    <i class="bi bi-person-badge menu-icon"></i>
+                    <span class="menu-text">Committees</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="committees-submenu">
+                    <a href="#" class="submenu-link">All Committees</a>
+                    <a href="#" class="submenu-link">Committee Members</a>
+                    <a href="#" class="submenu-link">Meetings</a>
+                </div>
+            </div>
+
+            <!-- Reports -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="reports">
+                    <i class="bi bi-graph-up menu-icon"></i>
+                    <span class="menu-text">Reports</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="reports-submenu">
+                    <a href="#" class="submenu-link">Financial Reports</a>
+                    <a href="#" class="submenu-link">Member Reports</a>
+                    <a href="#" class="submenu-link">Loan Reports</a>
+                    <a href="#" class="submenu-link">Transaction Reports</a>
+                </div>
+            </div>
+
+            <!-- Settings -->
+            <div class="menu-item">
+                <a href="#" class="menu-link" data-submenu="settings">
+                    <i class="bi bi-gear menu-icon"></i>
+                    <span class="menu-text">Settings</span>
+                    <i class="bi bi-chevron-down menu-arrow"></i>
+                </a>
+                <div class="submenu" id="settings-submenu">
+                    <a href="#" class="submenu-link">System Configuration</a>
+                    <a href="#" class="submenu-link">User Management</a>
+                    <a href="#" class="submenu-link">Branches</a>
+                    <a href="#" class="submenu-link">Audit Logs</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        {% block content %}
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-12">
+                    <div class="card shadow-sm">
+                        <div class="card-body">
+                            <h1 class="h3 mb-4">Welcome to Cooperative Banking System</h1>
+                            <p class="text-muted">This is the base template. Other pages will extend this layout.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endblock %}
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2025 Cooperative Banking System. All rights reserved.</p>
+            <small>Powered by Django & Bootstrap</small>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            const sidebar = document.getElementById('sidebar');
+            const sidebarOverlay = document.getElementById('sidebarOverlay');
+            const mainContent = document.getElementById('mainContent');
+            const menuLinks = document.querySelectorAll('[data-submenu]');
+
+            // Toggle sidebar
+            function toggleSidebar() {
+                sidebar.classList.toggle('active');
+                sidebarOverlay.classList.toggle('active');
+                
+                // For desktop, shift main content
+                if (window.innerWidth > 768) {
+                    mainContent.classList.toggle('shifted');
+                }
+            }
+
+            // Close sidebar
+            function closeSidebar() {
+                sidebar.classList.remove('active');
+                sidebarOverlay.classList.remove('active');
+                mainContent.classList.remove('shifted');
+            }
+
+            // Event listeners
+            sidebarToggle.addEventListener('click', toggleSidebar);
+            sidebarOverlay.addEventListener('click', closeSidebar);
+
+            // Handle submenu toggles
+            menuLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const submenuId = this.dataset.submenu + '-submenu';
+                    const submenu = document.getElementById(submenuId);
+                    const menuItem = this.closest('.menu-item');
+                    
+                    // Close other submenus
+                    document.querySelectorAll('.submenu').forEach(sub => {
+                        if (sub.id !== submenuId) {
+                            sub.classList.remove('expanded');
+                            sub.closest('.menu-item').classList.remove('expanded');
+                        }
+                    });
+                    
+                    // Toggle current submenu
+                    submenu.classList.toggle('expanded');
+                    menuItem.classList.toggle('expanded');
+                });
+            });
+
+            // Handle window resize
+            window.addEventListener('resize', function() {
+                if (window.innerWidth <= 768) {
+                    mainContent.classList.remove('shifted');
+                } else if (sidebar.classList.contains('active')) {
+                    mainContent.classList.add('shifted');
+                }
+            });
+
+            // Close sidebar when clicking on a submenu link on mobile
+            document.querySelectorAll('.submenu-link').forEach(link => {
+                link.addEventListener('click', function() {
+                    if (window.innerWidth <= 768) {
+                        closeSidebar();
+                    }
+                });
+            });
+
+            // Handle menu item active state
+            document.querySelectorAll('.menu-link, .submenu-link').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Don't prevent default for submenu toggles
+                    if (!this.hasAttribute('data-submenu')) {
+                        // Remove active class from all menu items
+                        document.querySelectorAll('.menu-link, .submenu-link').forEach(item => {
+                            item.classList.remove('active');
+                        });
+                        
+                        // Add active class to clicked item
+                        this.classList.add('active');
+                    }
+                });
+            });
+        });
+    </script>
+
+    {% block extra_js %}{% endblock %}
+</body>
+</html>
